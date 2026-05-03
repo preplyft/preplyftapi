@@ -8,10 +8,6 @@ import { Enrollment } from '../models/Enrollment';
 import { AuthRequest } from '../types/type';
 import { getPagination, buildPaginationResult } from '../utils/pagination';
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
 
 // GET /courses
 export const getCourses = async (req: Request, res: Response): Promise<void> => {
@@ -214,16 +210,11 @@ export const initiatePayment = async (req: AuthRequest, res: Response): Promise<
     res.status(409).json({ message: 'Already enrolled' });
     return;
   }
-  const order = await razorpay.orders.create({
-    amount: course.price * 100, // paise
-    currency: 'INR',
-    receipt: `receipt_${course._id}_${req.user!.id}`,
-  });
   res.json({
     orderId: order.id,
     amount: order.amount,
     currency: order.currency,
-    keyId: process.env.RAZORPAY_KEY_ID,
+    keyId: process.env.RAZORPAY_KEY_ID as string,
   });
 };
 
