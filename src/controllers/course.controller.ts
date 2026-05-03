@@ -211,9 +211,6 @@ export const initiatePayment = async (req: AuthRequest, res: Response): Promise<
     return;
   }
   res.json({
-    orderId: order.id,
-    amount: order.amount,
-    currency: order.currency,
     keyId: process.env.RAZORPAY_KEY_ID as string,
   });
 };
